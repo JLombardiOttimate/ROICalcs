@@ -12,7 +12,7 @@
             background-color: #f0f4f8;
         }
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 2rem auto;
             padding: 2rem;
             background-color: #ffffff;
@@ -46,7 +46,7 @@
         }
         .result-item {
             display: flex;
-            flex-direction: column; /* Stack label and description */
+            flex-direction: column;
             padding: 0.5rem 0;
             border-bottom: 1px dashed #e5e7eb;
         }
@@ -57,7 +57,7 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: 0.25rem; /* Space between label and description */
+            margin-bottom: 0.25rem;
         }
         .result-label span:first-child {
             color: #4b5563;
@@ -67,16 +67,28 @@
             color: #1f2937;
         }
         .result-description {
-            font-size: 0.875rem; /* Smaller font for description */
-            color: #6b7280; /* Lighter color for description */
-            margin-left: 0.5rem; /* Indent description */
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-left: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        .result-formula {
+            font-size: 0.8rem;
+            color: #4f46e5;
+            margin-left: 0.5rem;
+            margin-top: 0.1rem;
+            font-family: monospace;
+            background-color: #eef2ff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            overflow-x: auto;
         }
         .result-item.font-bold .result-label span:last-child {
             font-weight: 700;
-            font-size: 1.125rem; /* Larger font for totals */
+            font-size: 1.125rem;
         }
         .result-item.text-blue-600 .result-label span:last-child {
-            color: #2563eb; /* Blue for total savings */
+            color: #2563eb;
         }
         .button-primary {
             background-color: #3b82f6;
@@ -95,179 +107,229 @@
             background-color: #1d4ed8;
             transform: translateY(0);
         }
+
+        /* Two-column layout for main content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-6 md:p-8">
     <div class="container">
         <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">📊 Ottimate ROI Calculator</h1>
+        <div class="main-content">
+            <div>
+                <h2 class="section-title">Input Parameters</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="col-span-1">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Labor & Employee Info</h3>
+                        <div class="space-y-4">
+                            <div class="input-group">
+                                <label for="numEmployeesCurrent" class="block text-sm mb-1">Current Number of AP Employees</label>
+                                <input type="number" id="numEmployeesCurrent" value="13" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="hoursPerWeekAP" class="block text-sm mb-1">Hours per Week (AP)</label>
+                                <input type="number" id="hoursPerWeekAP" value="30" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="hourlyWage" class="block text-sm mb-1">Hourly Wage ($)</label>
+                                <input type="number" id="hourlyWage" value="22.0" step="0.01" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="benefitsRate" class="block text-sm mb-1">Benefits Rate (%)</label>
+                                <input type="number" id="benefitsRate" value="15" step="0.01" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="numManagers" class="block text-sm mb-1">Number of Managers</label>
+                                <input type="number" id="numManagers" value="3" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="managerSalaryYear" class="block text-sm mb-1">Manager Salary (Yearly $)</label>
+                                <input type="number" id="managerSalaryYear" value="85000.0" step="0.01" class="w-full">
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Input Section -->
-        <div class="mb-8">
-            <h2 class="section-title">Input Parameters</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Labor and Employee Information -->
-                <div class="col-span-1">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Labor & Employee Info</h3>
-                    <div class="space-y-4">
-                        <div class="input-group">
-                            <label for="numEmployeesCurrent" class="block text-sm mb-1">Current Number of AP Employees</label>
-                            <input type="number" id="numEmployeesCurrent" value="13" class="w-full">
+                    <div class="col-span-1">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Operational Data</h3>
+                        <div class="space-y-4 mb-8">
+                            <div class="input-group">
+                                <label for="numInvoicesMonth" class="block text-sm mb-1">Number of Invoices (Monthly)</label>
+                                <input type="number" id="numInvoicesMonth" value="15000" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="pagesPerInvoice" class="block text-sm mb-1">Pages per Invoice</label>
+                                <input type="number" id="pagesPerInvoice" value="1" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="costPerReamPaper" class="block text-sm mb-1">Cost per Ream of Paper ($)</label>
+                                <input type="number" id="costPerReamPaper" value="8.0" step="0.01" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="monthEndCloseDaysSaved" class="block text-sm mb-1">Month-End Close Days Saved</label>
+                                <input type="number" id="monthEndCloseDaysSaved" value="5" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="auditHoursMonthSaved" class="block text-sm mb-1">Audit Hours Saved (Monthly)</label>
+                                <input type="number" id="auditHoursMonthSaved" value="15" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="approvalMinutesPerInvoiceSaved" class="block text-sm mb-1">Approval Minutes per Invoice Saved</label>
+                                <input type="number" id="approvalMinutesPerInvoiceSaved" value="2" class="w-full">
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label for="hoursPerWeekAP" class="block text-sm mb-1">Hours per Week (AP)</label>
-                            <input type="number" id="hoursPerWeekAP" value="30" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="hourlyWage" class="block text-sm mb-1">Hourly Wage ($)</label>
-                            <input type="number" id="hourlyWage" value="22.0" step="0.01" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="benefitsRate" class="block text-sm mb-1">Benefits Rate (%)</label>
-                            <input type="number" id="benefitsRate" value="15" step="0.01" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="numEmployeesRetained" class="block text-sm mb-1">Number of Employees Retained</label>
-                            <input type="number" id="numEmployeesRetained" value="7" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="numManagers" class="block text-sm mb-1">Number of Managers</label>
-                            <input type="number" id="numManagers" value="3" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="managerSalaryYear" class="block text-sm mb-1">Manager Salary (Yearly $)</label>
-                            <input type="number" id="managerSalaryYear" value="85000.0" step="0.01" class="w-full">
+
+                        <h3 class="text-xl font-semibold mb-4 text-gray-700">Ottimate Pricing & Efficiency</h3>
+                        <div class="space-y-4">
+                            <div class="input-group">
+                                <label for="ottimateMonthlyCost" class="block text-sm mb-1">Ottimate Monthly Cost ($)</label>
+                                <input type="number" id="ottimateMonthlyCost" value="16500.0" step="0.01" class="w-full">
+                            </div>
+                            <div class="input-group">
+                                <label for="ottimateMinutesPerInvoice" class="block text-sm mb-1">Ottimate's Minutes per Invoice</label>
+                                <input type="number" id="ottimateMinutesPerInvoice" value="0.5" step="0.01" class="w-full">
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Operational Data & Ottimate Pricing -->
-                <div class="col-span-1">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Operational Data</h3>
-                    <div class="space-y-4 mb-8">
-                        <div class="input-group">
-                            <label for="numInvoicesMonth" class="block text-sm mb-1">Number of Invoices (Monthly)</label>
-                            <input type="number" id="numInvoicesMonth" value="15000" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="pagesPerInvoice" class="block text-sm mb-1">Pages per Invoice</label>
-                            <input type="number" id="pagesPerInvoice" value="1" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="costPerReamPaper" class="block text-sm mb-1">Cost per Ream of Paper ($)</label>
-                            <input type="number" id="costPerReamPaper" value="8.0" step="0.01" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="monthEndCloseDaysSaved" class="block text-sm mb-1">Month-End Close Days Saved</label>
-                            <input type="number" id="monthEndCloseDaysSaved" value="5" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="auditHoursMonthSaved" class="block text-sm mb-1">Audit Hours Saved (Monthly)</label>
-                            <input type="number" id="auditHoursMonthSaved" value="15" class="w-full">
-                        </div>
-                        <div class="input-group">
-                            <label for="approvalMinutesPerInvoiceSaved" class="block text-sm mb-1">Approval Minutes per Invoice Saved</label>
-                            <input type="number" id="approvalMinutesPerInvoiceSaved" value="2" class="w-full">
-                        </div>
-                    </div>
-
-                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Ottimate Pricing</h3>
-                    <div class="space-y-4">
-                        <div class="input-group">
-                            <label for="ottimateMonthlyCost" class="block text-sm mb-1">Ottimate Monthly Cost ($)</label>
-                            <input type="number" id="ottimateMonthlyCost" value="16500.0" step="0.01" class="w-full">
-                        </div>
-                    </div>
+                <div class="text-center mt-8">
+                    <button id="calculateBtn" class="button-primary">Calculate ROI</button>
                 </div>
             </div>
-            <div class="text-center mt-8">
-                <button id="calculateBtn" class="button-primary">Calculate ROI</button>
-            </div>
-        </div>
 
-        <!-- Results Section -->
-        <div>
-            <h2 class="section-title">Calculation Results</h2>
-            <div id="results" class="space-y-2">
-                <!-- Results will be displayed here -->
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Current Annual Labor Cost:</span>
-                        <span id="currentAnnualLaborCost">$0.00</span>
+            <div>
+                <h2 class="section-title">Calculation Results</h2>
+                <div id="results" class="space-y-2">
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Current Annual Labor Cost:</span>
+                            <span id="currentAnnualLaborCost">$0.00</span>
+                        </div>
+                        <div class="result-description">This represents the total annual cost of your current AP team.</div>
+                        <div class="result-formula">
+                            (NUM_EMPLOYEES_CURRENT × HOURS_PER_WEEK_AP × HOURLY_WAGE) × (1 + BENEFITS_RATE) × WEEKS_PER_YEAR
+                        </div>
                     </div>
-                    <div class="result-description">Calculated from Current Employees, Hours per Week (AP), Hourly Wage, and Benefits Rate.</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Annual Paper Costs:</span>
-                        <span id="paperCostAnnual">$0.00</span>
+                    <!-- Moved Annual Paper Costs to be explicitly part of Soft Cost Savings -->
+                    <div class="result-item font-bold text-lg">
+                        <div class="result-label">
+                            <span>Total Current Annual Expenditure:</span>
+                            <span id="totalCurrentExpenses">$0.00</span>
+                        </div>
+                        <div class="result-description">The sum of current labor costs before Ottimate. Note: Annual Paper Costs are now accounted for within Soft Cost Savings.</div>
+                        <div class="result-formula">
+                            Current Annual Labor Cost
+                        </div>
                     </div>
-                    <div class="result-description">Based on Monthly Invoices, Pages per Invoice, and Cost per Ream of Paper.</div>
-                </div>
-                <div class="result-item font-bold text-lg">
-                    <div class="result-label">
-                        <span>Total Current Annual Expenditure:</span>
-                        <span id="totalCurrentExpenses">$0.00</span>
+                    <div class="h-4"></div>
+                     <div class="result-item">
+                        <div class="result-label">
+                            <span>Calculated Employees Retained:</span>
+                            <span id="numEmployeesRetainedDisplay">0</span>
+                        </div>
+                        <div class="result-description">The estimated number of AP employees needed after implementing Ottimate, based on the new efficiency.</div>
+                        <div class="result-formula">
+                            CEILING(((NUM_INVOICES_MONTH × OTTIMATE_MINUTES_PER_INVOICE) / 60) / (HOURS_PER_WEEK_AP × WEEKS_PER_YEAR / MONTHS_PER_YEAR))
+                        </div>
                     </div>
-                    <div class="result-description">Sum of Current Annual Labor Cost and Annual Paper Costs.</div>
-                </div>
-                <div class="h-4"></div> <!-- Spacer -->
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Ottimate Annual Labor Cost:</span>
-                        <span id="ottimateAnnualLaborCost">$0.00</span>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Ottimate Annual Labor Cost:</span>
+                            <span id="ottimateAnnualLaborCost">$0.00</span>
+                        </div>
+                        <div class="result-description">The annual labor cost for the **calculated** reduced AP team after implementing Ottimate.</div>
+                        <div class="result-formula">
+                            (Calculated Employees Retained × HOURS_PER_WEEK_AP × HOURLY_WAGE) × (1 + BENEFITS_RATE) × WEEKS_PER_YEAR
+                        </div>
                     </div>
-                    <div class="result-description">Calculated from Retained Employees, Hours per Week (AP), Hourly Wage, and Benefits Rate.</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Ottimate Annual Subscription:</span>
-                        <span id="ottimateAnnualSubscription">$0.00</span>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Ottimate Annual Subscription:</span>
+                            <span id="ottimateAnnualSubscription">$0.00</span>
+                        </div>
+                        <div class="result-description">The total yearly cost for the Ottimate software subscription.</div>
+                        <div class="result-formula">
+                            OTTIMATE_MONTHLY_COST × MONTHS_PER_YEAR
+                        </div>
                     </div>
-                    <div class="result-description">Based on Ottimate Monthly Cost.</div>
-                </div>
-                <div class="result-item font-bold text-lg">
-                    <div class="result-label">
-                        <span>Total Ottimate Annual Cost:</span>
-                        <span id="totalOttimateCost">$0.00</span>
+                    <div class="result-item font-bold text-lg">
+                        <div class="result-label">
+                            <span>Total Ottimate Annual Cost:</span>
+                            <span id="totalOttimateCost">$0.00</span>
+                        </div>
+                        <div class="result-description">The combined annual cost of the retained AP team and the Ottimate subscription.</div>
+                        <div class="result-formula">
+                            Ottimate Annual Labor Cost + Ottimate Annual Subscription
+                        </div>
                     </div>
-                    <div class="result-description">Sum of Ottimate Annual Labor Cost and Ottimate Annual Subscription.</div>
-                </div>
-                <div class="h-4"></div> <!-- Spacer -->
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Hard Cost Savings (Headcount Reduction):</span>
-                        <span id="hardCostSavings">$0.00</span>
+                    <div class="h-4"></div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Hard Cost Savings (Headcount Reduction):</span>
+                            <span id="hardCostSavings">$0.00</span>
+                        </div>
+                        <div class="result-description">Savings achieved by reducing the number of AP employees based on Ottimate's efficiency.</div>
+                        <div class="result-formula">
+                            Current Annual Labor Cost - Ottimate Annual Labor Cost
+                        </div>
                     </div>
-                    <div class="result-description">Difference between Current Annual Labor Cost and Ottimate Annual Labor Cost.</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Soft Cost Savings (Time & Supplies):</span>
-                        <span id="softCostSavings">$0.00</span>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Soft Cost Savings (Time & Supplies):</span>
+                            <span id="softCostSavings">$0.00</span>
+                        </div>
+                        <div class="result-description">These are savings from increased efficiency and reduced operational overhead. This explicitly includes:
+                            <ul>
+                                <li>**Annual Paper Costs:** Elimination of paper purchasing.</li>
+                                <li>**Manager Month-End Close Savings:** Time managers save during month-end close.</li>
+                                <li>**AP Team Month-End Close Savings:** Time retained AP employees save during month-end close.</li>
+                                <li>**Approval Time Savings:** Time saved per invoice during the approval process.</li>
+                                <li>**Audit Prep Savings:** Hours saved monthly on preparing for audits.</li>
+                            </ul>
+                        </div>
+                        <div class="result-formula">
+                            Annual Paper Costs + Manager Savings Annual + Retained AP Savings Annual + Approval Savings Annual + Audit Savings Annual
+                        </div>
                     </div>
-                    <div class="result-description">Includes Paper Costs, Manager Savings (from Month-End Close Days Saved, Number of Managers, Manager Salary), Retained AP Savings (from Month-End Close Days Saved, Retained Employees), Approval Time Savings (from Monthly Invoices, Approval Minutes Saved), and Audit Prep Savings (from Monthly Audit Hours Saved).</div>
-                </div>
-                <div class="result-item font-bold text-lg text-blue-600">
-                    <div class="result-label">
-                        <span>Total Quantifiable Annual Savings (ROI):</span>
-                        <span id="totalAnnualSavings">$0.00</span>
+                    <div class="result-item font-bold text-lg text-blue-600">
+                        <div class="result-label">
+                            <span>Total Quantifiable Annual Savings (ROI):</span>
+                            <span id="totalAnnualSavings">$0.00</span>
+                        </div>
+                        <div class="result-description">The overall annual financial benefit from implementing Ottimate, combining all hard and soft cost savings, minus the Ottimate subscription cost.</div>
+                        <div class="result-formula">
+                            Current Annual Labor Cost + Soft Cost Savings - Total Ottimate Annual Cost
+                        </div>
                     </div>
-                    <div class="result-description">Total reduction in expenses after implementing Ottimate, including both hard and soft cost savings.</div>
-                </div>
-                <div class="h-4"></div> <!-- Spacer -->
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Daily Hard Cost of Inaction (Labor):</span>
-                        <span id="dailyHardCostOfInaction">$0.00</span>
+                    <div class="h-4"></div>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Daily Hard Cost of Inaction (Labor):</span>
+                            <span id="dailyHardCostOfInaction">$0.00</span>
+                        </div>
+                        <div class="result-description">The daily labor cost you incur by *not* implementing Ottimate.</div>
+                        <div class="result-formula">
+                            Hard Cost Savings / (WEEKS_PER_YEAR × DAYS_PER_WEEK)
+                        </div>
                     </div>
-                    <div class="result-description">Annual Hard Cost Savings divided by working days in a year.</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">
-                        <span>Daily Total Cost of Inaction (Hard & Soft):</span>
-                        <span id="dailyTotalCostOfInaction">$0.00</span>
+                    <div class="result-item">
+                        <div class="result-label">
+                            <span>Daily Total Cost of Inaction (Hard & Soft):</span>
+                            <span id="dailyTotalCostOfInaction">$0.00</span>
+                        </div>
+                        <div class="result-description">The total daily cost you incur by *not* implementing Ottimate, including both labor and operational inefficiencies.</div>
+                        <div class="result-formula">
+                            Total Quantifiable Annual Savings / (WEEKS_PER_YEAR × DAYS_PER_WEEK)
+                        </div>
                     </div>
-                    <div class="result-description">Total Quantifiable Annual Savings divided by working days in a year.</div>
                 </div>
             </div>
         </div>
@@ -296,8 +358,7 @@
                 const NUM_EMPLOYEES_CURRENT = getInputValue('numEmployeesCurrent');
                 const HOURS_PER_WEEK_AP = getInputValue('hoursPerWeekAP');
                 const HOURLY_WAGE = getInputValue('hourlyWage');
-                const BENEFITS_RATE = getInputValue('benefitsRate') / 100; // Convert percentage to decimal
-                const NUM_EMPLOYEES_RETAINED = getInputValue('numEmployeesRetained');
+                const BENEFITS_RATE = getInputValue('benefitsRate') / 100;
                 const NUM_MANAGERS = getInputValue('numManagers');
                 const MANAGER_SALARY_YEAR = getInputValue('managerSalaryYear');
 
@@ -309,6 +370,7 @@
                 const APPROVAL_MINUTES_PER_INVOICE_SAVED = getInputValue('approvalMinutesPerInvoiceSaved');
 
                 const OTTIMATE_MONTHLY_COST = getInputValue('ottimateMonthlyCost');
+                const OTTIMATE_MINUTES_PER_INVOICE = getInputValue('ottimateMinutesPerInvoice');
 
                 // ------------------------------------------------------------------------------
                 // CONSTANTS: Fixed values for calculations
@@ -321,80 +383,75 @@
 
                 // ------------------------------------------------------------------------------
                 // CALCULATE HARD COSTS (CURRENT): Labor costs before Ottimate
-                // Uses: NUM_EMPLOYEES_CURRENT, HOURS_PER_WEEK_AP, HOURLY_WAGE, BENEFITS_RATE
                 // ------------------------------------------------------------------------------
                 const current_annual_labor_cost = (NUM_EMPLOYEES_CURRENT * HOURS_PER_WEEK_AP * HOURLY_WAGE) * (1 + BENEFITS_RATE) * WEEKS_PER_YEAR;
 
                 // ------------------------------------------------------------------------------
+                // CALCULATE DYNAMICALLY RETAINED EMPLOYEES:
+                // This is based on the new Ottimate efficiency per invoice.
+                // We calculate the total hours needed with Ottimate, then divide by individual employee capacity.
+                // Round up to ensure sufficient staffing.
+                // ------------------------------------------------------------------------------
+                let NUM_EMPLOYEES_RETAINED = 0;
+                if (HOURS_PER_WEEK_AP > 0) { // Prevent division by zero
+                    const total_ottimate_minutes_required_monthly = NUM_INVOICES_MONTH * OTTIMATE_MINUTES_PER_INVOICE;
+                    const total_ottimate_hours_required_monthly = total_ottimate_minutes_required_monthly / 60;
+                    const employee_hours_per_month = HOURS_PER_WEEK_AP * WEEKS_PER_YEAR / MONTHS_PER_YEAR; // Hours per employee per month
+                    NUM_EMPLOYEES_RETAINED = Math.ceil(total_ottimate_hours_required_monthly / employee_hours_per_month);
+                }
+                // Ensure at least 1 employee if invoices exist and hours per week AP is > 0, or 0 if no invoices
+                if (NUM_INVOICES_MONTH > 0 && NUM_EMPLOYEES_RETAINED === 0 && HOURS_PER_WEEK_AP > 0) {
+                    NUM_EMPLOYEES_RETAINED = 1;
+                } else if (NUM_INVOICES_MONTH === 0) {
+                    NUM_EMPLOYEES_RETAINED = 0;
+                }
+
+
+                // ------------------------------------------------------------------------------
                 // CALCULATE SOFT COSTS (CURRENT): Operational costs and potential savings areas
                 // ------------------------------------------------------------------------------
-                // Paper Costs
-                // Uses: NUM_INVOICES_MONTH, PAGES_PER_INVOICE, COST_PER_REAM_PAPER
                 const paper_cost_annual = (NUM_INVOICES_MONTH * PAGES_PER_INVOICE / 500) * COST_PER_REAM_PAPER * MONTHS_PER_YEAR;
-
-                // Month-End Close Savings (Manager)
-                // Uses: MANAGER_SALARY_YEAR, MONTH_END_CLOSE_DAYS_SAVED, NUM_MANAGERS
                 const manager_hourly_rate = MANAGER_SALARY_YEAR / WEEKS_PER_YEAR / HOURS_PER_WEEK_MANAGER;
                 const manager_hours_saved_month = MONTH_END_CLOSE_DAYS_SAVED * HOURS_PER_DAY;
                 const manager_savings_annual = NUM_MANAGERS * manager_hours_saved_month * manager_hourly_rate * MONTHS_PER_YEAR;
-
-                // AP Team Time Savings (Month-End Close)
-                // Uses: NUM_EMPLOYEES_RETAINED, HOURLY_WAGE, BENEFITS_RATE, MONTH_END_CLOSE_DAYS_SAVED
                 const retained_ap_hourly_rate_blended = HOURLY_WAGE * (1 + BENEFITS_RATE);
                 const retained_ap_hours_saved_month = MONTH_END_CLOSE_DAYS_SAVED * HOURS_PER_DAY;
                 const retained_ap_savings_annual = NUM_EMPLOYEES_RETAINED * retained_ap_hours_saved_month * retained_ap_hourly_rate_blended * MONTHS_PER_YEAR;
-
-                // Approval Time Savings
-                // Uses: NUM_INVOICES_MONTH, APPROVAL_MINUTES_PER_INVOICE_SAVED, retained_ap_hourly_rate_blended
                 const approval_hours_saved_month = (NUM_INVOICES_MONTH * APPROVAL_MINUTES_PER_INVOICE_SAVED) / 60;
                 const approval_savings_annual = approval_hours_saved_month * retained_ap_hourly_rate_blended * MONTHS_PER_YEAR;
-
-                // Audit Prep Savings
-                // Uses: AUDIT_HOURS_MONTH_SAVED, retained_ap_hourly_rate_blended
                 const audit_savings_annual = AUDIT_HOURS_MONTH_SAVED * retained_ap_hourly_rate_blended * MONTHS_PER_YEAR;
 
-                // TOTAL CURRENT EXPENSES: Sum of all current costs
-                // Uses: current_annual_labor_cost, paper_cost_annual
-                const total_current_expenses = current_annual_labor_cost + paper_cost_annual;
+                // Soft Cost Savings now explicitly includes paper_cost_annual
+                const soft_cost_savings = paper_cost_annual + manager_savings_annual + retained_ap_savings_annual + approval_savings_annual + audit_savings_annual;
+
+                // Total Current Expenses is now just labor, as paper is moved to soft savings
+                const total_current_expenses = current_annual_labor_cost;
 
                 // ------------------------------------------------------------------------------
                 // CALCULATE OTTIMATE SOLUTION COSTS: Costs after implementing Ottimate
                 // ------------------------------------------------------------------------------
-                // Ottimate Annual Subscription
-                // Uses: OTTIMATE_MONTHLY_COST
                 const ottimate_annual_subscription = OTTIMATE_MONTHLY_COST * MONTHS_PER_YEAR;
-                // Ottimate Annual Labor Cost (retained employees)
-                // Uses: NUM_EMPLOYEES_RETAINED, HOURS_PER_WEEK_AP, HOURLY_WAGE, BENEFITS_RATE
                 const ottimate_annual_labor_cost = (NUM_EMPLOYEES_RETAINED * HOURS_PER_WEEK_AP * HOURLY_WAGE) * (1 + BENEFITS_RATE) * WEEKS_PER_YEAR;
-                // Total Ottimate Cost
-                // Uses: ottimate_annual_labor_cost, ottimate_annual_subscription
                 const total_ottimate_cost = ottimate_annual_labor_cost + ottimate_annual_subscription;
 
                 // ------------------------------------------------------------------------------
                 // TOTAL SAVINGS: The core ROI calculations
                 // ------------------------------------------------------------------------------
-                // Hard Cost Savings (Headcount Reduction)
-                // Uses: current_annual_labor_cost, ottimate_annual_labor_cost
                 const hard_cost_savings = current_annual_labor_cost - ottimate_annual_labor_cost;
-                // Soft Cost Savings (Time & Supplies)
-                // Uses: paper_cost_annual, manager_savings_annual, retained_ap_savings_annual, approval_savings_annual, audit_savings_annual
-                const soft_cost_savings = paper_cost_annual + manager_savings_annual + retained_ap_savings_annual + approval_savings_annual + audit_savings_annual;
-                // Total Quantifiable Annual Savings (ROI)
-                // Uses: total_current_expenses, total_ottimate_cost, soft_cost_savings
-                const total_annual_savings = (total_current_expenses - total_ottimate_cost) + soft_cost_savings;
-                // Daily Hard Cost of Inaction
-                // Uses: current_annual_labor_cost, ottimate_annual_labor_cost, WEEKS_PER_YEAR, DAYS_PER_WEEK
+
+                // Corrected Total Annual Savings formula
+                const total_annual_savings = current_annual_labor_cost + soft_cost_savings - total_ottimate_cost;
+
                 const daily_hard_cost_of_inaction = (current_annual_labor_cost - ottimate_annual_labor_cost) / (WEEKS_PER_YEAR * DAYS_PER_WEEK);
-                // Daily Total Cost of Inaction
-                // Uses: total_annual_savings, WEEKS_PER_YEAR, DAYS_PER_WEEK
                 const daily_total_cost_of_inaction = total_annual_savings / (WEEKS_PER_YEAR * DAYS_PER_WEEK);
 
                 // ------------------------------------------------------------------------------
                 // RESULTS: Display the calculated values
                 // ------------------------------------------------------------------------------
                 document.getElementById('currentAnnualLaborCost').textContent = formatCurrency(current_annual_labor_cost);
-                document.getElementById('paperCostAnnual').textContent = formatCurrency(paper_cost_annual);
+                // Removed paperCostAnnual as a standalone display item from here
                 document.getElementById('totalCurrentExpenses').textContent = formatCurrency(total_current_expenses);
+                document.getElementById('numEmployeesRetainedDisplay').textContent = NUM_EMPLOYEES_RETAINED;
                 document.getElementById('ottimateAnnualLaborCost').textContent = formatCurrency(ottimate_annual_labor_cost);
                 document.getElementById('ottimateAnnualSubscription').textContent = formatCurrency(ottimate_annual_subscription);
                 document.getElementById('totalOttimateCost').textContent = formatCurrency(total_ottimate_cost);
